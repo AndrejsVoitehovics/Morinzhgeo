@@ -1,7 +1,7 @@
-package factMap.factMapControllers;
+package app.factMap.factMapControllers;
 
 
-import factMap.factMapServices.FactMapService;
+import app.factMap.factMapServices.FactMapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;

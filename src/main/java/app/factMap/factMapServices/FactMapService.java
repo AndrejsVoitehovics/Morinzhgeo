@@ -1,4 +1,4 @@
-package factMap.factMapServices;
+package app.factMap.factMapServices;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
