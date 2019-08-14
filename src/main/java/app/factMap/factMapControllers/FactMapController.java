@@ -37,7 +37,7 @@ public class FactMapController {
     @ResponseBody
     public String submit(@RequestParam("file") MultipartFile file) throws IOException {
 
-        factMap.doPost(file);
+        factMap.readCpdXFile(file);
         return file.getOriginalFilename();
     }
 

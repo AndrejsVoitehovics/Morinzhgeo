@@ -4,47 +4,86 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.swing.*;
+import javax.swing.text.html.HTMLDocument;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Scanner;
 
 @Service
 public class FactMapService {
 
 
-    public void doPost(MultipartFile file) throws IOException {
+    public void readCpdXFile(MultipartFile cpdXFile) throws IOException {
 
-        File convFile = new File(file.getOriginalFilename());
+        File convFile = new File(cpdXFile.getOriginalFilename());
         FileOutputStream fos = new FileOutputStream(convFile);
-        fos.write(file.getBytes());
+        fos.write(cpdXFile.getBytes());
         fos.close();
 
 
-        Scanner scannMatrix = null;
-        ArrayList<ArrayList> Matrix = new ArrayList<ArrayList>();
-        //Чтение файла и запись в сканер
+        Scanner scannerCpdXToString = null;
+        ArrayList<ArrayList> cpdXStringArray = new ArrayList<ArrayList>();
+
         try {
-            scannMatrix = new Scanner(new File(String.valueOf(convFile)));
+            scannerCpdXToString = new Scanner(new File(String.valueOf(convFile)));
         } catch (FileNotFoundException e) {
             JOptionPane.showMessageDialog(null, "Файл не найден");
         }
-        //Запись данных из сканера в двумерный ArrayList
-        while (scannMatrix.hasNextLine()) {
-            Scanner scanLine = new Scanner(scannMatrix.nextLine());
-            ArrayList<String> line = new ArrayList<>();
+
+        while (scannerCpdXToString.hasNextLine()) {
+            Scanner scanLine = new Scanner(scannerCpdXToString.nextLine());
+            ArrayList<String> line = new ArrayList<String>();
             while (scanLine.hasNext()) {
 
-                line.add(String.valueOf(scanLine.next()));
+
+                line.add(((scanLine.next()).replaceAll(":", "")
+                        .replaceAll("\\s+", "").trim()));
 
             }
-            Matrix.add(line);
+            cpdXStringArray.add(line);
         }
 
-        for (int i = 0; i < Matrix.size(); i++) {
-            System.out.println(Matrix.get(i));
+
+
+
+        System.out.println(cpdXStringArray.get(1).get(1).toString());
+
+        for (int i = 0; i < cpdXStringArray.size(); i++) {
+            System.out.print(cpdXStringArray.get(i));
+            System.out.println();
         }
 
-        scannMatrix.close();
+
+        ArrayList<ArrayList> cpdXDoubleArray = new ArrayList<>(cpdXStringArray.size());
+
+        Scanner scannerCpdXToDouble = null;
+
+        scannerCpdXToDouble = new Scanner(String.valueOf(cpdXStringArray));
+
+
+        while (scannerCpdXToDouble.hasNextLine()) {
+
+            Scanner scanLine = new Scanner(scannerCpdXToDouble.nextLine());
+
+            ArrayList<Double> line = new ArrayList<>();
+
+            while (scanLine.hasNext()) {
+
+                line.add(Double.parseDouble(((scanLine.next()))));
+
+            }
+            cpdXDoubleArray.add(line);
+        }
+
+        for (int i = 0; i < cpdXDoubleArray.size(); i++) {
+            System.out.print(cpdXDoubleArray.get(i));
+            System.out.println();
+        }
+
+
+        scannerCpdXToString.close();
         convFile.deleteOnExit();
         convFile.delete();
 
