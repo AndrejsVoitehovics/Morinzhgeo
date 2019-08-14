@@ -4,11 +4,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.swing.*;
-import javax.swing.text.html.HTMLDocument;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Scanner;
 
 @Service
@@ -46,41 +43,27 @@ public class FactMapService {
         }
 
 
-
-
-        System.out.println(cpdXStringArray.get(1).get(1).toString());
-
-        for (int i = 0; i < cpdXStringArray.size(); i++) {
-            System.out.print(cpdXStringArray.get(i));
-            System.out.println();
-        }
+        cpdXStringArray.remove(0);
 
 
         ArrayList<ArrayList> cpdXDoubleArray = new ArrayList<>(cpdXStringArray.size());
 
-        Scanner scannerCpdXToDouble = null;
-
-        scannerCpdXToDouble = new Scanner(String.valueOf(cpdXStringArray));
-
-
-        while (scannerCpdXToDouble.hasNextLine()) {
-
-            Scanner scanLine = new Scanner(scannerCpdXToDouble.nextLine());
-
+        for (int i = 0; i < cpdXStringArray.size(); i++) {
             ArrayList<Double> line = new ArrayList<>();
-
+            Scanner scanLine = new Scanner(String.valueOf(cpdXStringArray.get(i)));
             while (scanLine.hasNext()) {
-
-                line.add(Double.parseDouble(((scanLine.next()))));
-
+                line.add(Double.parseDouble(scanLine.next().replaceAll("\\[", "")
+                        .replaceAll("\"", "").replaceAll(",", "")
+                        .replaceAll("]", "")));
             }
             cpdXDoubleArray.add(line);
         }
-
         for (int i = 0; i < cpdXDoubleArray.size(); i++) {
             System.out.print(cpdXDoubleArray.get(i));
             System.out.println();
         }
+        System.out.print(cpdXDoubleArray.get(1).get(2));
+
 
 
         scannerCpdXToString.close();
