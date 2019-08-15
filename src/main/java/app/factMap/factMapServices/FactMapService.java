@@ -5,8 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.swing.*;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Scanner;
+import java.util.*;
 
 @Service
 public class FactMapService {
@@ -15,9 +14,9 @@ public class FactMapService {
     public void readCpdXFile(MultipartFile cpdXFile) throws IOException {
 
         File convFile = new File(cpdXFile.getOriginalFilename());
-        FileOutputStream fos = new FileOutputStream(convFile);
-        fos.write(cpdXFile.getBytes());
-        fos.close();
+        FileOutputStream fileOutputStream = new FileOutputStream(convFile);
+        fileOutputStream.write(cpdXFile.getBytes());
+        fileOutputStream.close();
 
 
         Scanner scannerCpdXToString = null;
@@ -43,7 +42,15 @@ public class FactMapService {
         }
 
 
-        cpdXStringArray.remove(0);
+        ArrayList<ArrayList> itemsForRemove = new ArrayList<ArrayList>();
+
+        for (int i = 0; i < cpdXStringArray.size(); i++) {
+            if (cpdXStringArray.get(i).toString().contains("X")) {
+                itemsForRemove.add(cpdXStringArray.get(i));
+            }
+        }
+
+        cpdXStringArray.removeAll(itemsForRemove);
 
 
         ArrayList<ArrayList> cpdXDoubleArray = new ArrayList<>(cpdXStringArray.size());
@@ -63,7 +70,6 @@ public class FactMapService {
             System.out.println();
         }
         System.out.print(cpdXDoubleArray.get(1).get(2));
-
 
 
         scannerCpdXToString.close();
