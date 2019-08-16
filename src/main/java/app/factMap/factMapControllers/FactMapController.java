@@ -1,6 +1,8 @@
 package app.factMap.factMapControllers;
 
 
+import app.factMap.factMapServices.CpdXPrepareService;
+import app.factMap.factMapServices.CpdYPrepareService;
 import app.factMap.factMapServices.FactMapService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
@@ -16,10 +18,14 @@ import java.io.IOException;
 public class FactMapController {
 
     private final FactMapService factMap;
+    private final CpdXPrepareService cpdXPrepareService;
+    private final CpdYPrepareService cpdYPrepareService;
 
     @Autowired
-    public FactMapController(FactMapService factMap) {
+    public FactMapController(FactMapService factMap, CpdXPrepareService cpdXPrepareService, CpdYPrepareService cpdYPrepareService) {
         this.factMap = factMap;
+        this.cpdXPrepareService = cpdXPrepareService;
+        this.cpdYPrepareService = cpdYPrepareService;
     }
 
     @RequestMapping(value = "/factmap", method = RequestMethod.GET)
@@ -35,10 +41,12 @@ public class FactMapController {
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public String submit(@RequestParam("file") MultipartFile file) throws IOException {
+    public void submitCpdXFile(@RequestParam("cpdxfile") MultipartFile cpdXFile,
+                               @RequestParam("cpdyfile") MultipartFile cpdYFile) throws IOException {
 
-        factMap.readCpdXFile(file);
-        return file.getOriginalFilename();
+       factMap.CreateNewCoordinateArray(cpdXPrepareService.readCpdXFile(cpdXFile), cpdYPrepareService.readCpdXFile(cpdYFile) );
+
+
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
