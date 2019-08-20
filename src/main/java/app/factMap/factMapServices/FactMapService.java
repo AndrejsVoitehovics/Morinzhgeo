@@ -28,8 +28,12 @@ public class FactMapService {
 
 
         for (int i = 0; i < cpdXDoubleArray.size(); i++) {
-            if (cpdXDoubleArray.get(i).get(0).toString().equals(cpdYDoubleArray.get(i).get(0).toString())) {
-                ArrayList insert = new ArrayList();
+
+            ArrayList insert = new ArrayList();
+
+            if (cpdXDoubleArray.get(i).get(1).toString().equals(cpdYDoubleArray.get(i).get(1).toString()) &&
+                    cpdXDoubleArray.get(i).get(0).toString().equals(cpdYDoubleArray.get(i).get(0).toString()) ) {
+
                 double xCoordinate = (double) cpdXDoubleArray.get(i).get(2);
                 double roundedOneDigitX = Math.round(xCoordinate * 10) / 10.0;
                 insert.add(roundedOneDigitX);
@@ -49,7 +53,7 @@ public class FactMapService {
         }
 
 
-        PrintWriter printWriter = new PrintWriter("aaaaa4.txt");
+        PrintWriter printWriter = new PrintWriter("aaaaa9.txt");
 
         for (int i = 0; i < arrayForCoordinateCorrection.size(); i++) {
             String stringToWrite = arrayForCoordinateCorrection.get(i).toString().replaceAll(",", "")
